@@ -22,7 +22,7 @@ services:
       start_period: 40s
 
   neuprinthttp:
-    image: tomdolafi/neuprinthttp
+    image: gcr.io/sandbox-220614/connectome-neuprint/neuprinthttp:0.1.0
     volumes:
       - ./neuprinthttp/config:/app/config
     ports:
