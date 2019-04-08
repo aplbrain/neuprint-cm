@@ -1,0 +1,19 @@
+{
+    "engine": "neuPrint-neo4j",
+    "engine-config": {
+       "server": "neo4j:7474",
+       "user": "neo4j",
+       "password": "neo4j"
+    },    
+    "ssl-cert": "/app/certs/cert.crt",
+    "ssl-key": "/app/certs/cert.key",
+    "hostname": "localhost",
+    "swagger-docs": "/app/swaggerdocs",
+    "static-dir": "/app/www/neuprintexplorer",
+    "oauthclient-id": "",
+    "oauthclient-secret": "",
+    "appsecret": "",
+    "auth-token": "",
+    "auth-datastore": ""
+}
+

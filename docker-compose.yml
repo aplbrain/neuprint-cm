@@ -1,0 +1,37 @@
+version: '3.2'
+
+services:
+
+  neo4j:
+    image: neo4j:3.5
+    volumes:
+      - ./neo4j/conf:/conf
+      - ./neo4j/plugins:/plugins
+      - /opt/data/db/neo4j/neuprint:/data
+        #    ports:
+        #      - 7474:7474
+        #      - 7687:7687
+    networks:
+      - neuprint-net
+    restart: unless-stopped
+    healthcheck:
+      test: curl -i http://neo4j:7474 2>&1 | grep -c -e '200 OK'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      #      start_period: 40s
+
+  neuprinthttp:
+    image: tomdolafi/neuprinthttp
+    volumes:
+      - ./neuprinthttp/config:/app/config
+    ports:
+      - 11000:11000
+    networks:
+      - neuprint-net
+    restart: unless-stopped
+    depends_on: 
+      - neo4j
+
+networks:
+  neuprint-net:
