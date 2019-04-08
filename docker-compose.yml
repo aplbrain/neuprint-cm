@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.7'
 
 services:
 
@@ -7,7 +7,7 @@ services:
     volumes:
       - ./neo4j/conf:/conf
       - ./neo4j/plugins:/plugins
-      - /opt/data/db/neo4j/neuprint:/data
+      - /data/db/neo4j/neuprint:/data
         #    ports:
         #      - 7474:7474
         #      - 7687:7687
@@ -19,7 +19,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-      #      start_period: 40s
+      start_period: 40s
 
   neuprinthttp:
     image: tomdolafi/neuprinthttp
