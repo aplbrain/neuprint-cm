@@ -29,7 +29,8 @@ RUN apk add --no-cache \
         bash
 COPY --from=httpbuilder /go/bin/neuPrintHTTP /app/
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/swaggerdocs /app/swaggerdocs/
-COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/authorized.json /go/src/github.com/connectome-neuprint/neuPrintHTTP/sampleconfig.json /app/config/
+COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/authorized.json /app/auth/
+COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/sampleconfig.json /app/config/
 RUN mv /app/config/sampleconfig.json /app/config/config.json
 COPY --from=explorerbuilder /opt/neuPrintExplorer/build /app/www/neuprintexplorer
 COPY --from=explorerbuilder /opt/certs /app/certs/

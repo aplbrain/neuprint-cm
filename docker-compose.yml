@@ -25,6 +25,7 @@ services:
     image: gcr.io/sandbox-220614/connectome-neuprint/neuprinthttp:0.1.0
     volumes:
       - ./neuprinthttp/config:/app/config
+      - ./neuprinthttp/auth:/app/auth
     ports:
       - 11000:11000
     networks:
