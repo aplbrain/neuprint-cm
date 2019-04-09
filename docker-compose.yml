@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   neo4j:
-    image: neo4j:3.5
+    image: gcr.io/sandbox-220614/connectome-neuprint/neo4j:3.5
     networks:
       - neuprint-net
     restart: unless-stopped
