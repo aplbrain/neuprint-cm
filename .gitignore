@@ -1,0 +1,2 @@
+# ignore overide yaml for dev environment
+*.override.yml

@@ -4,13 +4,6 @@ services:
 
   neo4j:
     image: neo4j:3.5
-    volumes:
-      - ./neo4j/conf:/conf
-      - ./neo4j/plugins:/plugins
-      - /data/db/neo4j/neuprint:/data
-        #    ports:
-        #      - 7474:7474
-        #      - 7687:7687
     networks:
       - neuprint-net
     restart: unless-stopped
@@ -23,11 +16,6 @@ services:
 
   neuprinthttp:
     image: gcr.io/sandbox-220614/connectome-neuprint/neuprinthttp:0.2.0
-    volumes:
-      - ./neuprinthttp/config:/app/config
-      - ./neuprinthttp/auth:/app/auth
-    ports:
-      - 11000:11000
     networks:
       - neuprint-net
     restart: unless-stopped

@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+
+  neo4j:
+    environment:
+      - NEO4J_dbms_memory_heap_initial__size=512M
+      - NEO4J_dbms_memory_heap_max__size=512M
+    volumes:
+      - ./neo4j/plugins:/plugins
+      - /opt/data/db/neo4j/neuprint:/data
+    ports:
+      - 7474:7474
+      - 7687:7687
+
+  neuprinthttp:
+    build: ./neuprinthttp
+    image: tomdolafi/neuprinthttp
+    volumes:
+      - /opt/conf/neuprinthttp/conf:/app/config
+      - /opt/conf/neuprinthttp/auth:/app/auth
+    ports:
+      - 11000:11000
