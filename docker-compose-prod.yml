@@ -14,7 +14,7 @@ services:
 
   neuprinthttp:
     volumes:
-      - ./neuprinthttp/config:/app/config
-      - ./neuprinthttp/auth:/app/auth
+      - /opt/app/neuprinthttp/conf/:/app/config
+      - /opt/app/neuprinthttp/auth:/app/auth
     ports:
       - 11000:11000
