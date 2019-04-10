@@ -8,6 +8,7 @@ services:
       - NEO4J_dbms_memory_heap_max__size=2G
       - NEO4J_dbms_memory_pagecache_size=4G    
       - NEO4J_read_only=true
+      - NEO4J_PASSWD=${NEO4J_PASSWD}
     volumes:
       - ./neo4j/plugins:/plugins
       - /data/db/neo4j/neuprint:/data
