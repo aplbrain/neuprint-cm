@@ -6,7 +6,6 @@ services:
     image: gcr.io/sandbox-220614/connectome-neuprint/neo4j:3.5
     networks:
       - neuprint-net
-    restart: unless-stopped
     healthcheck:
       test: curl -i http://neo4j:7474 2>&1 | grep -c -e '200 OK'
       interval: 10s
@@ -18,9 +17,15 @@ services:
     image: gcr.io/sandbox-220614/connectome-neuprint/neuprinthttp:0.2.0
     networks:
       - neuprint-net
-    restart: unless-stopped
     depends_on: 
       - neo4j
+
+  nginx:
+    image: nginx:1.15-alpine
+    networks:
+      - neuprint-net
+    depends_on:
+      - neuprinthttp
 
 networks:
   neuprint-net:

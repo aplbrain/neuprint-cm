@@ -12,6 +12,7 @@ services:
     volumes:
       - ./neo4j/plugins:/plugins
       - /data/db/neo4j/neuprint:/data
+    restart: unless-stopped
 
   neuprinthttp:
     volumes:
@@ -19,3 +20,13 @@ services:
       - /opt/app/neuprinthttp/auth:/app/auth
     ports:
       - 11000:11000
+    restart: unless-stopped
+
+  nginx:
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /etc/nginx/ssl/:/etc/nginx/ssl/        
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
