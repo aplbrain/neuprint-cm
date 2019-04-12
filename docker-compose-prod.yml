@@ -18,8 +18,6 @@ services:
     volumes:
       - /opt/app/neuprinthttp/conf/:/app/config
       - /opt/app/neuprinthttp/auth:/app/auth
-    ports:
-      - 11000:11000
     restart: unless-stopped
 
   nginx:
