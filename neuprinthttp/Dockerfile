@@ -36,4 +36,4 @@ COPY --from=explorerbuilder /opt/neuPrintExplorer/build /app/www/neuprintexplore
 COPY --from=explorerbuilder /opt/certs /app/certs/
 COPY --from=explorerbuilder /opt/wait-for-it/wait-for-it.sh /app/
 WORKDIR /app
-CMD bash /app/wait-for-it.sh neo4j:7474 --timeout=0 --strict -- ./neuPrintHTTP -p 443 -public_read /app/config/config.json
+CMD bash /app/wait-for-it.sh neo4j:7474 --timeout=0 --strict -- ./neuPrintHTTP -port 443 -public_read /app/config/config.json
