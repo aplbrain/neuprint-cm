@@ -13,12 +13,22 @@ services:
       - ./neo4j/plugins:/plugins
       - /data/db/neo4j/neuprint:/data
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200m"
+        max-file: "10"
 
   neuprinthttp:
     volumes:
       - /opt/app/neuprinthttp/conf/:/app/config
       - /opt/app/neuprinthttp/auth:/app/auth
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200m"
+        max-file: "10"
 
   nginx:
     volumes:
@@ -28,3 +38,8 @@ services:
       - 80:80
       - 443:443
     restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "10"
