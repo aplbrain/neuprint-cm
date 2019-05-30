@@ -1,24 +1,29 @@
 # ---- http Build ----
 FROM golang:latest as httpbuilder
-#ARG APP_TAG=master
-RUN mkdir /build 
-WORKDIR /build 
-RUN go get github.com/connectome-neuprint/neuPrintHTTP
+RUN mkdir /build
+WORKDIR /build
+RUN go get -tags nokafka github.com/connectome-neuprint/neuPrintHTTP
 
 # ---- explorer Build ----
-FROM node:latest as explorerbuilder
+FROM node:10-stretch as explorerbuilder
+RUN apt-get -y update && apt-get -y install g++ build-essential
 WORKDIR /opt
-RUN git clone https://github.com/connectome-neuprint/neuPrintExplorer.git
 RUN git clone https://github.com/vishnubob/wait-for-it.git
-WORKDIR /opt/neuPrintExplorer
-RUN npm install && \
-    npm run build
+
 RUN mkdir certs
 WORKDIR /opt/certs
 RUN openssl req \
     -newkey rsa:4096 -nodes -sha256 -keyout cert.key \
     -x509 -days 365 -out cert.crt \
-    -subj /CN=\*.hhmi.org 
+    -subj /CN=\*.hhmi.org
+
+WORKDIR /opt
+ARG APP_TAG=master
+RUN git clone --branch ${APP_TAG} --depth 1  https://github.com/connectome-neuprint/neuPrintExplorer.git
+
+WORKDIR /opt/neuPrintExplorer
+RUN npm ci --loglevel verbose
+RUN npm run build-public
 
 # ---- Release ----
 FROM alpine
