@@ -14,7 +14,7 @@ services:
       start_period: 40s
 
   neuprinthttp:
-    image: gcr.io/sandbox-220614/connectome-neuprint/neuprinthttp:1.8.9
+    image: gcr.io/sandbox-220614/connectome-neuprint/neuprinthttp:1.9.0
     networks:
       - neuprint-net
     depends_on: 
