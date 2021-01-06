@@ -5,8 +5,8 @@
        "user": "neo4j",
        "password": "neo4j"
     },    
-    "ssl-cert": "/app/certs/cert.crt",
-    "ssl-key": "/app/certs/cert.key",
+    "ssl-cert": "/app/certs/cert.pem",
+    "ssl-key": "/app/certs/key.pem",
     "hostname": "localhost",
     "swagger-docs": "/app/swaggerdocs",
     "static-dir": "/app/www/neuprintexplorer",
