@@ -6,7 +6,7 @@ services:
     environment:
       - NEO4J_dbms_memory_heap_initial__size=2G
       - NEO4J_dbms_memory_heap_max__size=2G
-      - NEO4J_dbms_memory_pagecache_size=4G    
+      - NEO4J_dbms_memory_pagecache_size=4G
       - NEO4J_read_only=true
       - NEO4J_PASSWD=${NEO4J_PASSWD}
     volumes:
@@ -18,6 +18,15 @@ services:
       options:
         max-size: "200m"
         max-file: "10"
+    deploy:
+      resources:
+        limits:
+          cpus: '32'
+          memory: 120G
+        reservations:
+          cpus: '32'
+          memory: 120G
+
 
   neuprinthttp:
     volumes:
@@ -33,7 +42,7 @@ services:
   nginx:
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - /etc/nginx/ssl/:/etc/nginx/ssl/        
+      - /etc/nginx/ssl/:/etc/nginx/ssl/
     ports:
       - 80:80
       - 443:443
