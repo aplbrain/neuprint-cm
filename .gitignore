@@ -1,3 +1,4 @@
 # ignore override yaml used in dev environment
 *.override.yml
 *.env
+local
