@@ -33,6 +33,12 @@ RUN npm run build
 
 # ---- Release ----
 FROM alpine:3.12.3
+MAINTAINER flyem project team
+LABEL maintainer="neuprint@janelia.hhmi.org"
+ARG NEUPRINT_TAG=master
+LABEL neuprinthttp_version=${NEUPRINT_TAG}
+ARG EXPLORER_TAG=master
+LABEL neuprintexplorer_version=${EXPLORER_TAG}
 RUN apk add --no-cache bash
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/neuPrintHTTP /app/
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/swaggerdocs /app/swaggerdocs/
