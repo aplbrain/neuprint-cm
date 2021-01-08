@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   neo4j:
-    image: gcr.io/sandbox-220614/connectome-neuprint/neo4j:3.5
+    image: gcr.io/flyem-public/connectome-neuprint/neo4j:3.5
     networks:
       - neuprint-net
     healthcheck:
@@ -14,7 +14,7 @@ services:
       start_period: 40s
 
   neuprinthttp:
-    image: gcr.io/sandbox-220614/connectome-neuprint/neuprinthttp:1.9.0
+    image: gcr.io/flyem-public/connectome-neuprint/neuprinthttp:1.2.2
     networks:
       - neuprint-net
     depends_on:
