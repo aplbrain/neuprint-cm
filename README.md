@@ -6,19 +6,57 @@ Docker containers and configuration files for deploying neuPrint web application
 Place .env file with environment variables in directory of launching docker-compose.
 
 ```
-vi .env
+vim .env
 ```
-Add database password to initialize neo4j with, NEO4J_PASSWD=<password>.
+Add database password to initialize neo4j with, 
+```
+NEO4J_PASSWD=<password>.
+```
 
-Place configuration files
-  - config.json 
-  - authorized.json
-  - cert files
+### Place configuration files in the expected locations so the container can mount them.
+- create directory to store neo4j files
+```
+mkdir -p /data/db/neo4j/neuprint
+```
+ - neuprinthttp config.json 
+    - example found in neuprinthttp/config/config.json
+ ```
+ /opt/app/neuprinthttp/conf/config.json
+ ```
+ - neuprinthttp authorized.json
+    - example found in neuprinthttp/auth/authorized.json
+    - this is not used unless the "auth-file" key is present in config.json
+ ```
+ /opt/app/neuprinthttp/auth/authorized.json
+ ```
+ - nginx cert files
+ ```
+/etc/nginx/ssl/cert.pem
+/etc/nginx/ssl/key.pem
+``` 
 
-### Mount volumes 
-      - /opt/app/neuprinthttp/conf/:/app/config
-      - /opt/app/neuprinthttp/auth:/app/auth
-      - /opt/app/neuprinthttp/certs/:/app/certs
+### Build the Images
 
-### Deploy containers
+```bash
+docker build --build-arg EXPLORER_TAG=<neuprintexplorer_repo_tag> --build-arg NEUPRINT_TAG=<neuprint_repo_tag> . -t <registry>/neuprinthttp:<version>
+```
+- if the repo_tags are not specified the master branch will be used.
+- if the registry and version numbers do not match the ones specified in the docker-compose.yml, change them there as well.
+
+### Push the Images to the Registry
+
+```
+docker push <registry>/neuprinthttp:<version>
+```
+
+### Deploy Container Stack
+```
 sudo docker-compose -f docker-compose.yml -f docker-compose-prod.yml up -d
+```
+
+### Testing the Stack in dev Environment
+
+```
+sudo docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
+```
+- an example of the override yaml can be found in the template directory. Check the mount locations to identify where to place your local configuration files.
