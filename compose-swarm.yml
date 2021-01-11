@@ -1,0 +1,53 @@
+version: '3.7'
+networks:
+  neuprint-net: 
+    driver: overlay
+    attachable: true
+services:
+  neo4j:
+    deploy:
+      resources:
+        limits:
+          cpus: '32'
+          memory: 120G
+        reservations:
+          cpus: '32'
+          memory: 120G
+    environment:
+      NEO4J_PASSWD: '12345'
+      NEO4J_dbms_memory_heap_initial__size: 30G
+      NEO4J_dbms_memory_heap_max__size: 30G
+      NEO4J_dbms_memory_pagecache_size: 60G
+      NEO4J_read_only: "true"
+    image: gcr.io/flyem-public/connectome-neuprint/neo4j:3.5
+    logging:
+      driver: json-file
+      options:
+        max-file: '10'
+        max-size: 200m
+    networks:
+      - neuprint-net
+    restart:
+      unless-stopped
+    volumes:
+      - /data15/app/neo4j/data/db/neuprint:/data:rw
+      - /opt/neuprint-cm/neo4j/plugins:/plugins:rw
+  neuprinthttp:
+    depends_on:
+      - neo4j
+    image: gcr.io/flyem-public/connectome-neuprint/neuprinthttp:1.2.2
+    logging:
+      driver: json-file
+      options:
+        max-file: '10'
+        max-size: 200m
+    networks:
+      - neuprint-net
+    restart:
+      unless-stopped
+    volumes:
+      - /data15/app/neuprinthttp/auth:/app/auth:rw
+      - /data15/app/neuprinthttp/conf:/app/config:rw
+    ports:
+      - "11000:11000"
+
