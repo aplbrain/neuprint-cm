@@ -12,7 +12,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build .
 
 # ---- explorer Build ----
 FROM node:14 as explorerbuilder
-RUN npm install -g npm@7.3.0
+RUN npm install -g npm@7.5.2
 RUN apt-get -y update && apt-get -y install g++ build-essential
 WORKDIR /opt
 RUN git clone https://github.com/vishnubob/wait-for-it.git
@@ -28,19 +28,20 @@ ARG EXPLORER_TAG=master
 RUN git clone --branch ${EXPLORER_TAG} --depth 1  https://github.com/connectome-neuprint/neuPrintExplorer.git
 
 WORKDIR /opt/neuPrintExplorer
-RUN npm ci --loglevel verbose
+RUN npm install --loglevel verbose
 RUN npm run build
 
 # ---- Release ----
-FROM alpine:3.12.3
+FROM python:3.9-slim
 MAINTAINER flyem project team
 LABEL maintainer="neuprint@janelia.hhmi.org"
 ARG NEUPRINT_TAG=master
 LABEL neuprinthttp_version=${NEUPRINT_TAG}
 ARG EXPLORER_TAG=master
 LABEL neuprintexplorer_version=${EXPLORER_TAG}
-RUN apk add --no-cache bash
+RUN pip install --no-cache-dir pandas scipy scikit-learn
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/neuPrintHTTP /app/
+COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/canonical_celltype.py /app/
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/swaggerdocs /app/swaggerdocs/
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/authorized.json /app/auth/
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/sampleconfig.json /app/config/
