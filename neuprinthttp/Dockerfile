@@ -1,5 +1,9 @@
 # ---- http Build ----
 FROM golang:1.15 as httpbuilder
+WORKDIR /go/src/github.com/labstack/
+RUN git clone --depth 1 --branch v4.1.16 https://github.com/labstack/echo.git
+WORKDIR /go/src/golang.org/x/
+RUN git clone --depth 1 --branch release-branch.go1.15 https://go.googlesource.com/net
 WORKDIR /go/src/github.com/connectome-neuprint/
 # fetch source from github tag
 ARG NEUPRINT_TAG=master
@@ -8,11 +12,11 @@ WORKDIR /go/src/github.com/connectome-neuprint/neuPrintHTTP
 # run go get
 RUN go get -d -v ./
 # run go build
-RUN CGO_ENABLED=0 GOOS=linux go build .
+RUN go build .
 
 # ---- explorer Build ----
 FROM node:14 as explorerbuilder
-RUN npm install -g npm@7.5.2
+RUN npm install -g npm@7.15.1
 RUN apt-get -y update && apt-get -y install g++ build-essential
 WORKDIR /opt
 RUN git clone https://github.com/vishnubob/wait-for-it.git
