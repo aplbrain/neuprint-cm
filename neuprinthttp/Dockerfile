@@ -1,16 +1,10 @@
 # ---- http Build ----
-FROM golang:1.15 as httpbuilder
-WORKDIR /go/src/github.com/labstack/
-RUN git clone --depth 1 --branch v4.1.16 https://github.com/labstack/echo.git
-WORKDIR /go/src/golang.org/x/
-RUN git clone --depth 1 --branch release-branch.go1.15 https://go.googlesource.com/net
+FROM golang:1.18 as httpbuilder
 WORKDIR /go/src/github.com/connectome-neuprint/
 # fetch source from github tag
 ARG NEUPRINT_TAG=master
 RUN git clone --depth 1 --branch ${NEUPRINT_TAG} https://github.com/connectome-neuprint/neuPrintHTTP.git
 WORKDIR /go/src/github.com/connectome-neuprint/neuPrintHTTP
-# run go get
-RUN go get -d -v ./
 # run go build
 RUN go build .
 
