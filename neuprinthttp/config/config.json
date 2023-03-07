@@ -1,19 +1,115 @@
 {
-    "engine": "neuPrint-neo4j",
-    "engine-config": {
-       "server": "neo4j:7474",
-       "user": "neo4j",
-       "password": "neo4j"
-    },    
-    "ssl-cert": "/app/certs/cert.pem",
-    "ssl-key": "/app/certs/key.pem",
-    "hostname": "localhost",
-    "swagger-docs": "/app/swaggerdocs",
-    "static-dir": "/app/www/neuprintexplorer",
-    "oauthclient-id": "",
-    "oauthclient-secret": "",
-    "appsecret": "",
-    "auth-token": "",
-    "auth-datastore": ""
-}
+  "engine": "neuPrint-neo4j",
+  "engine-config": {
+    "server": "neo4j-hemibrain-v1_0_1:7474",
+    "user": "neo4j",
+    "password": "<password>"
+  },
+  "mainstore-alternatives": [
+    {
+      "engine": "neuPrint-neo4j",
+      "engine-config": {
+        "server": "neo4j-fib19:7474",
+        "user": "neo4j",
+        "password": "<password>"
+      }
+    },
+    {
+      "engine": "neuPrint-neo4j",
+      "engine-config": {
+        "server": "neo4j-hemibrain-v1_1_0:7474",
+        "user": "neo4j",
+        "password": "<password>"
+      }
+    }
+  ],
 
+  "datatypes": {
+    "skeletons": [
+      {
+        "instance": "fib19_skeletons:v1.0",
+        "engine": "dvidkv",
+        "engine-config": {
+          "dataset": "fib19:v1.0",
+          "server": "http://emdata6.int.janelia.org:8700",
+          "branch": "93f08942ac85495ab140d2808d893187",
+          "instance": "segmentation_skeletons",
+          "token": "<token>"
+        }
+      },
+      {
+        "instance": "hemi_skeleton:v1.0.1",
+        "engine": "dvidkv",
+        "engine-config": {
+          "dataset": "hemibrain:v1.0.1",
+          "server": "http://dvid-hemi-flattened:8000",
+          "branch": "52a13328874c4bb7b15dc4280da26576",
+          "instance": "segmentation_skeletons",
+          "token": "<token>"
+        }
+      },
+      {
+        "instance": "hemi_skeleton:v1.1",
+        "engine": "dvidkv",
+        "engine-config": {
+          "dataset": "hemibrain:v1.1",
+          "server": "http://dvid-hemi-flattened:8000",
+          "branch": "20631f94c3f446d7864bc55bf515706e",
+          "instance": "segmentation_skeletons",
+          "token": "<token>"
+        }
+      }
+    ],
+    "roimeshes": [
+      {
+        "instance": "fib19_roimesh:v1.0",
+        "engine": "dvidkv",
+        "engine-config": {
+          "dataset": "fib19:v1.0",
+          "server": "http://emdata6.int.janelia.org:8700",
+          "branch": "93f08942ac85495ab140d2808d893187",
+          "instance": "roisSmoothedDecimated",
+          "token": "<flyem_login_token>"
+        }
+      },
+      {
+        "instance": "hemi_roimesh:v1.0.1",
+        "engine": "dvidkv",
+        "engine-config": {
+          "dataset": "hemibrain:v1.0.1",
+          "server": "http://dvid-hemi-flattened:8000",
+          "branch": "52a13328874c4bb7b15dc4280da26576",
+          "instance": "roisSmoothedDecimated",
+          "token": "<flyem_login_token>"
+        }
+      },
+      {
+        "instance": "hemi_roimesh:v1.1",
+        "engine": "dvidkv",
+        "engine-config": {
+          "dataset": "hemibrain:v1.1",
+          "server": "http://dvid-hemi-flattened:8000",
+          "branch": "20631f94c3f446d7864bc55bf515706e",
+          "instance": "roisSmoothedDecimated",
+          "token": "<flyem_login_token>"
+        }
+      }
+    ]
+  },
+  "ssl-cert": "/opt/conf/cert.pem",
+  "ssl-key": "/opt/conf/key.pem",
+  "oauthclient-id": "<google oauth client id>",
+  "oauthclient-secret": "<google oauth client secret>",
+  "appsecret": "<google application secret>",
+  "hostname": "neuprint.janelia.org",
+  "auth-token": "<JWT to access auth service>",
+  "auth-datastore": "<url to cloudbased auth service>",
+  "swagger-docs": "/app/swaggerdocs",
+  "proxy-auth": "https://flyemlogin.janelia.org:443",
+  "proxy-insecure": true,
+  "static-dir": "/app/www/neuprintexplorer",
+  "ng-dir": "/app/nglayers",
+  "log-file": "/app/logs/log.json",
+  "auth-fileOMIT": "/opt/conf/authorized.json",
+  "timeout": 20
+}
