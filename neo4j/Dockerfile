@@ -1,10 +1,9 @@
-FROM neo4j:3.5
+FROM neo4j:3.5.20
 
 ARG NEO4J_DEFAULT_PASSWD=neo4j
 ENV NEO4J_PASSWD=${NEO4J_DEFAULT_PASSWD}
 
-RUN apk add --no-cache \
-        curl
+RUN apt-get update && apt-get install -y --no-install-recommends curl
 
 COPY ./plugins/apoc-3.5.0.1-all.jar ./plugins/neuprint-procedures.jar /var/lib/neo4j/plugins/
 
