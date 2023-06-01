@@ -48,6 +48,14 @@ docker build --build-arg EXPLORER_TAG=<neuprintexplorer_repo_tag> --build-arg NE
 ```
 docker push <registry>/neuprinthttp:<version>
 ```
+### For multiplatform images
+- combine the build and the push into one step
+
+```
+docker buildx build --platform linux/amd64,linux/arm64 --build-arg EXPLORER_TAG=<neuprintexplorer_repo_tag> --build-arg NEUPRINT_TAG=<neuprint_repo_tag> -t <registry>/neuprinthttp:<version> --push .
+```
+- the --platform argument specifies which platforms to build for
+- the --push makes sure that the images are pushed to the registry with the correct manifest list.
 
 ### Deploy Container Stack
 ```
