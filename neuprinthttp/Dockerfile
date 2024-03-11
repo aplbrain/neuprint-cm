@@ -4,8 +4,7 @@ WORKDIR /opt
 # fetch source from github tag
 ARG NEUPRINT_TAG=master
 RUN git clone --depth 1 --branch ${NEUPRINT_TAG} https://github.com/aplbrain/neuPrintHTTP.git
-# WORKDIR /go/src/github.com/connectome-neuprint/neuPrintHTTP
-# run go build
+WORKDIR /opt/neuPrintHTTP
 RUN go build .
 
 # ---- explorer Build ----
