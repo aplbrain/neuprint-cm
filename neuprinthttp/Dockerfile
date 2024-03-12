@@ -21,7 +21,7 @@ RUN openssl req \
     -subj /CN=\neuprint-dev.bossdb.org
 
 WORKDIR /opt
-ARG EXPLORER_TAG=master
+ARG EXPLORER_TAG=master-aplbrain
 RUN git clone --branch ${EXPLORER_TAG} --depth 1  https://github.com/aplbrain/neuPrintExplorer.git
 
 WORKDIR /opt/neuPrintExplorer
