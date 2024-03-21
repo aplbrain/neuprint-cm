@@ -18,7 +18,7 @@ WORKDIR /opt/certs
 RUN openssl req \
     -newkey rsa:4096 -nodes -sha256 -keyout key.pem \
     -x509 -days 365 -out cert.pem \
-    -subj /CN=\neuprint-dev.bossdb.org
+    -subj /CN=\neuprint.bossdb.org
 
 WORKDIR /opt
 ARG EXPLORER_TAG=master-aplbrain
