@@ -1,11 +1,10 @@
 # ---- http Build ----
 FROM golang:1.18 as httpbuilder
-WORKDIR /go/src/github.com/connectome-neuprint/
+WORKDIR /opt
 # fetch source from github tag
 ARG NEUPRINT_TAG=master
-RUN git clone --depth 1 --branch ${NEUPRINT_TAG} https://github.com/connectome-neuprint/neuPrintHTTP.git
-WORKDIR /go/src/github.com/connectome-neuprint/neuPrintHTTP
-# run go build
+RUN git clone --depth 1 --branch ${NEUPRINT_TAG} https://github.com/aplbrain/neuPrintHTTP.git
+WORKDIR /opt/neuPrintHTTP
 RUN go build .
 
 # ---- explorer Build ----
@@ -19,11 +18,11 @@ WORKDIR /opt/certs
 RUN openssl req \
     -newkey rsa:4096 -nodes -sha256 -keyout key.pem \
     -x509 -days 365 -out cert.pem \
-    -subj /CN=\*.hhmi.org
+    -subj /CN=\neuprint.bossdb.org
 
 WORKDIR /opt
-ARG EXPLORER_TAG=master
-RUN git clone --branch ${EXPLORER_TAG} --depth 1  https://github.com/connectome-neuprint/neuPrintExplorer.git
+ARG EXPLORER_TAG=master-aplbrain
+RUN git clone --branch ${EXPLORER_TAG} --depth 1  https://github.com/aplbrain/neuPrintExplorer.git
 
 WORKDIR /opt/neuPrintExplorer
 RUN npm install --loglevel verbose
@@ -31,18 +30,18 @@ RUN npm run build
 
 # ---- Release ----
 FROM python:3.9-slim
-MAINTAINER flyem project team
-LABEL maintainer="neuprint@janelia.hhmi.org"
+MAINTAINER APL BossDB Team
+LABEL maintainer="hannah.martinez@jhuapl.edu"
 ARG NEUPRINT_TAG=master
 LABEL neuprinthttp_version=${NEUPRINT_TAG}
 ARG EXPLORER_TAG=master
 LABEL neuprintexplorer_version=${EXPLORER_TAG}
 RUN pip install --no-cache-dir pandas scipy scikit-learn
-COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/neuPrintHTTP /app/
-COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/canonical_celltype.py /app/
-COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/swaggerdocs /app/swaggerdocs/
-COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/authorized.json /app/auth/
-COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/sampleconfig.json /app/config/
+COPY --from=httpbuilder /opt/neuPrintHTTP/neuPrintHTTP /app/
+COPY --from=httpbuilder /opt/neuPrintHTTP/canonical_celltype.py /app/
+COPY --from=httpbuilder /opt/neuPrintHTTP/swaggerdocs /app/swaggerdocs/
+COPY --from=httpbuilder /opt/neuPrintHTTP/authorized.json /app/auth/
+COPY --from=httpbuilder /opt/neuPrintHTTP/sampleconfig.json /app/config/
 RUN mv /app/config/sampleconfig.json /app/config/config.json
 
 COPY --from=explorerbuilder /opt/neuPrintExplorer/build /app/www/neuprintexplorer
