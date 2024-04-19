@@ -1,12 +1,12 @@
 # ---- http Build ----
-FROM golang:1.18 as httpbuilder
+FROM golang:1.20-bullseye as httpbuilder
 WORKDIR /go/src/github.com/connectome-neuprint/
 # fetch source from github tag
 ARG NEUPRINT_TAG=master
 RUN git clone --depth 1 --branch ${NEUPRINT_TAG} https://github.com/connectome-neuprint/neuPrintHTTP.git
 WORKDIR /go/src/github.com/connectome-neuprint/neuPrintHTTP
 # run go build
-RUN go build .
+RUN CGO_ENABLED=0 GOOS=linux go build .
 
 # ---- explorer Build ----
 FROM node:14 as explorerbuilder
