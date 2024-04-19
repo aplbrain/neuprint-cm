@@ -37,7 +37,7 @@ ARG NEUPRINT_TAG=master
 LABEL neuprinthttp_version=${NEUPRINT_TAG}
 ARG EXPLORER_TAG=master
 LABEL neuprintexplorer_version=${EXPLORER_TAG}
-RUN pip install --no-cache-dir pandas scipy scikit-learn
+RUN pip install --progress-bar off --no-cache-dir pandas scipy scikit-learn
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/neuPrintHTTP /app/
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/canonical_celltype.py /app/
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/swaggerdocs /app/swaggerdocs/
