@@ -1,5 +1,5 @@
 # ---- http Build ----
-FROM golang:1.20-bullseye as httpbuilder
+FROM golang:1.21.9-bullseye as httpbuilder
 WORKDIR /go/src/github.com/connectome-neuprint/
 # fetch source from github tag
 ARG NEUPRINT_TAG=master
@@ -30,7 +30,7 @@ RUN npm install --loglevel verbose
 RUN npm run build
 
 # ---- Release ----
-FROM python:3.9-slim
+FROM python:3.9.6-slim
 MAINTAINER flyem project team
 LABEL maintainer="neuprint@janelia.hhmi.org"
 ARG NEUPRINT_TAG=master
