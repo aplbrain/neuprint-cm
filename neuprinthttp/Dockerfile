@@ -1,5 +1,5 @@
 # ---- http Build ----
-FROM golang:1.21.9-bullseye as httpbuilder
+FROM golang:1.24.2-bullseye as httpbuilder
 WORKDIR /go/src/github.com/connectome-neuprint/
 # fetch source from github tag
 ARG NEUPRINT_TAG=master
@@ -9,8 +9,7 @@ WORKDIR /go/src/github.com/connectome-neuprint/neuPrintHTTP
 RUN CGO_ENABLED=0 GOOS=linux go build .
 
 # ---- explorer Build ----
-FROM node:14 as explorerbuilder
-RUN npm install -g npm@7.15.1
+FROM node:22 as explorerbuilder
 RUN apt-get -y update && apt-get -y install g++ build-essential
 WORKDIR /opt
 RUN git clone https://github.com/vishnubob/wait-for-it.git
@@ -26,7 +25,7 @@ ARG EXPLORER_TAG=master
 RUN git clone --branch ${EXPLORER_TAG} --depth 1  https://github.com/connectome-neuprint/neuPrintExplorer.git
 
 WORKDIR /opt/neuPrintExplorer
-RUN npm install --loglevel verbose
+RUN npm install --loglevel verbose --force
 RUN npm run build
 
 # ---- Release ----
@@ -42,8 +41,8 @@ COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/neuP
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/canonical_celltype.py /app/
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/swaggerdocs /app/swaggerdocs/
 COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/authorized.json /app/auth/
-COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/sampleconfig.json /app/config/
-RUN mv /app/config/sampleconfig.json /app/config/config.json
+COPY --from=httpbuilder /go/src/github.com/connectome-neuprint/neuPrintHTTP/config-examples/config-neo4j.json /app/config/
+RUN mv /app/config/config-neo4j.json /app/config/config.json
 
 COPY --from=explorerbuilder /opt/neuPrintExplorer/build /app/www/neuprintexplorer
 COPY --from=explorerbuilder /opt/certs /app/certs/
