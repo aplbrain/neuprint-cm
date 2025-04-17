@@ -1,5 +1,5 @@
 # ---- http Build ----
-FROM golang:1.24.2-bullseye as httpbuilder
+FROM golang:1.24.2-bullseye AS httpbuilder
 WORKDIR /go/src/github.com/connectome-neuprint/
 # fetch source from github tag
 ARG NEUPRINT_TAG=master
@@ -9,7 +9,7 @@ WORKDIR /go/src/github.com/connectome-neuprint/neuPrintHTTP
 RUN CGO_ENABLED=0 GOOS=linux go build .
 
 # ---- explorer Build ----
-FROM node:22 as explorerbuilder
+FROM node:22 AS explorerbuilder
 RUN apt-get -y update && apt-get -y install g++ build-essential
 WORKDIR /opt
 RUN git clone https://github.com/vishnubob/wait-for-it.git
